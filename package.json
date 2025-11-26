@@ -7,8 +7,8 @@
     "email": "charles.de.jager@privify.pw"
   },
   "organization": "Privify",
-  "main": "dist/index.js",
-  "module": "dist/index.js",
+  "main": "index.js",
+  "module": "index.js",
   "files": [
     "dist"
   ],

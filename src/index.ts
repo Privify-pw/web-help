@@ -1,2 +1,2 @@
-export { parseMarkdown } from '@/services';
-export type { HelpMetadata } from '@/types';
+export { parseMarkdown } from '@/services/parse-markdown';
+export type { HelpMetadata } from '@/types/help-metadata';
