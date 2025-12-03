@@ -1,14 +1,22 @@
 {
   "name": "@privify-pw/web-help",
-  "version": "0.0.1",
-  "description": "A web help system for React.  Written in typescript and uses vite for build",
+  "version": "0.1.0",
+  "description": "A comprehensive, headless help system for React applications. Built with TypeScript for maximum flexibility.",
   "author": {
     "name": "Charles de Jager",
     "email": "charles.de.jager@privify.pw"
   },
   "organization": "Privify",
-  "main": "index.js",
-  "module": "index.js",
+  "main": "dist/web-help-library.umd.js",
+  "module": "dist/web-help-library.es.js",
+  "types": "dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/web-help-library.es.js",
+      "require": "./dist/web-help-library.umd.js"
+    }
+  },
   "files": [
     "dist"
   ],
@@ -23,10 +31,13 @@
     "lint": "eslint .",
     "preview": "vite preview"
   },
+  "peerDependencies": {
+    "react": "^18.0.0 || ^19.0.0",
+    "react-dom": "^18.0.0 || ^19.0.0"
+  },
   "dependencies": {
-    "react": "^19.2.0",
-    "react-dom": "^19.2.0",
-    "react-router-dom": "^7.9.6"
+    "gray-matter": "^4.0.3",
+    "marked": "^17.0.1"
   },
   "devDependencies": {
     "@eslint/js": "^9.39.1",
@@ -38,6 +49,9 @@
     "eslint-plugin-react-hooks": "^7.0.1",
     "eslint-plugin-react-refresh": "^0.4.24",
     "globals": "^16.5.0",
+    "react": "^19.2.0",
+    "react-dom": "^19.2.0",
+    "react-router-dom": "^7.9.6",
     "typescript": "~5.9.3",
     "typescript-eslint": "^8.46.4",
     "vite": "^7.2.4"
@@ -47,7 +61,12 @@
     "react",
     "help",
     "documentation",
-    "vite",
-    "typescript"
-  ]
+    "headless",
+    "typescript",
+    "component-library",
+    "web-help",
+    "markdown",
+    "vite"
+  ],
+  "sideEffects": false
 }
