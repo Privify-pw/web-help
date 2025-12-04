@@ -1,12 +1,12 @@
 {
-  "name": "@privify-pw/web-help",
+  "name": "@pii-keep/web-help",
   "version": "0.1.0",
   "description": "A comprehensive, headless help system for React applications. Built with TypeScript for maximum flexibility.",
   "author": {
     "name": "Charles de Jager",
-    "email": "charles.de.jager@privify.pw"
+    "email": "charles.de.jager@piikeep.com"
   },
-  "organization": "Privify",
+  "organization": "PIIKeep",
   "main": "dist/web-help-library.umd.js",
   "module": "dist/web-help-library.es.js",
   "types": "dist/index.d.ts",
@@ -18,12 +18,27 @@
     }
   },
   "files": [
-    "dist"
+    "dist",
+    "README.md",
+    "LICENSE"
   ],
+  "publishConfig": {
+    "access": "public"
+  },
   "repository": {
     "type": "git",
-    "url": "https://github.com/Privify-pw/web-help.git"
+    "url": "https://github.com/pii-keep/web-help.git"
   },
+  "keywords": [
+    "react",
+    "help",
+    "documentation",
+    "headless",
+    "typescript",
+    "component-library",
+    "contextual-help",
+    "markdown"
+  ],
   "type": "module",
   "scripts": {
     "dev": "vite",
@@ -57,16 +72,5 @@
     "vite": "^7.2.4"
   },
   "license": "MIT",
-  "keywords": [
-    "react",
-    "help",
-    "documentation",
-    "headless",
-    "typescript",
-    "component-library",
-    "web-help",
-    "markdown",
-    "vite"
-  ],
   "sideEffects": false
 }
