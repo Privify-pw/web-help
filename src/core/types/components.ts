@@ -69,11 +69,11 @@ export interface HelpContentProps extends BaseComponentProps {
   /** Rendered HTML content */
   content: string;
   /** Render custom component for code blocks */
-  renderCodeBlock?: (code: string, language?: string) => ReactNode;
+  renderCodeBlock?: (props: { code: string; language: string }) => ReactNode;
   /** Render custom component for images */
-  renderImage?: (src: string, alt?: string, title?: string) => ReactNode;
+  renderImage?: (props: { src: string; alt: string }) => ReactNode;
   /** Render custom component for links */
-  renderLink?: (href: string, text: string) => ReactNode;
+  renderLink?: (props: { href: string; children: ReactNode }) => ReactNode;
 }
 
 /**

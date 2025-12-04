@@ -36,15 +36,37 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - PWA utilities: usePWA, useOfflineContent hooks
 - Service worker helpers: registerHelpServiceWorker, generateServiceWorkerScript
 
+## [0.1.2] - 2025-12-04
+
+### Modified HTTML rendering
+
+1. Installed html-react-parser package (13 new dependencies added)
+2. Updated HelpContent component:
+   - Removed dangerouslySetInnerHTML
+   - Implemented safe HTML parsing with html-react-parser
+   - Added custom renderer support for code blocks, images, and links
+   - Properly typed all DOM node handling
+3. Updated type definitions in components.ts:
+   - Changed renderer props to use object syntax: { code, language }, { src, alt }, { href, children }
+   - This provides better type safety and clearer API
+
+#### Benefits
+
+- ✅ No XSS vulnerabilities - HTML is parsed to React elements, not inserted as raw HTML
+- ✅ Custom component rendering - Full control over code blocks, images, and links
+- ✅ Type-safe - All TypeScript errors resolved
+- ✅ Smaller bundle - More efficient than alternatives like react-markdown
+- ✅ Headless philosophy - Maintains your component architecture
+
 ## [0.1.1] - 2025-12-04
 
-### Modified
+### Ensured company name is correct
 
 - Changed all occurances of Privify to PIIKeep. Privify was the org name when we started the project. The correct branded name is PIIKeep
 
 ## [0.1.0] - 2025-12-03
 
-### Added
+### Features Added
 
 #### Phase 1A: Core Foundation
 
