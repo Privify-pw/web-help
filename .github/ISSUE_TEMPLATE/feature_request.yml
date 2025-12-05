@@ -1,0 +1,135 @@
+name: Feature Request
+description: Suggest a new feature or enhancement for @piikeep/web-help
+title: '[Feature]: '
+labels: ['enhancement', 'needs-triage']
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for suggesting a feature! Please provide as much detail as possible to help us understand your request.
+
+  - type: textarea
+    id: problem
+    attributes:
+      label: Problem Statement
+      description: Is your feature request related to a problem? Please describe.
+      placeholder: I'm frustrated when... I need to... It would be helpful if...
+    validations:
+      required: true
+
+  - type: textarea
+    id: solution
+    attributes:
+      label: Proposed Solution
+      description: Describe the solution you'd like to see.
+      placeholder: Add a new component/hook/feature that allows...
+    validations:
+      required: true
+
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Alternatives Considered
+      description: Have you considered any alternative solutions or workarounds?
+      placeholder: I've tried using X, but it doesn't work because...
+
+  - type: textarea
+    id: example
+    attributes:
+      label: Example Usage
+      description: Show how you would use this feature with example code.
+      placeholder: |
+        ```tsx
+        import { NewFeature } from '@piikeep/web-help';
+
+        function MyComponent() {
+          return (
+            <NewFeature
+              option="value"
+              onEvent={(data) => console.log(data)}
+            />
+          );
+        }
+        ```
+      render: tsx
+
+  - type: dropdown
+    id: phase
+    attributes:
+      label: Related Phase
+      description: Which implementation phase does this relate to?
+      options:
+        - Phase 1A - Core Foundation
+        - Phase 1B - Navigation & Search
+        - Phase 1C - Media & Rich Content
+        - Phase 2A - User Engagement & Feedback
+        - Phase 2B - Additional Display Modes
+        - Phase 3A - Advanced Content Formats
+        - Phase 3B - Content Editor Utility
+        - Phase 4 - Advanced Features
+        - Phase 5 - Developer Experience
+        - Not phase-specific
+
+  - type: dropdown
+    id: priority
+    attributes:
+      label: Priority
+      description: How important is this feature to you?
+      options:
+        - Critical - Blocking my use of the library
+        - High - Significant improvement
+        - Medium - Nice to have
+        - Low - Minor enhancement
+    validations:
+      required: true
+
+  - type: dropdown
+    id: breaking
+    attributes:
+      label: Breaking Change
+      description: Would this require breaking changes to the API?
+      options:
+        - 'No'
+        - 'Yes'
+        - 'Not sure'
+    validations:
+      required: true
+
+  - type: textarea
+    id: use-case
+    attributes:
+      label: Use Case
+      description: Describe your specific use case for this feature.
+      placeholder: |
+        I'm building a documentation site for... and I need to...
+
+  - type: textarea
+    id: benefits
+    attributes:
+      label: Benefits
+      description: What benefits would this feature provide? Who would benefit?
+      placeholder: |
+        - Developers building help systems would benefit because...
+        - End users would benefit because...
+        - This would enable use cases like...
+
+  - type: textarea
+    id: additional
+    attributes:
+      label: Additional Context
+      description: Add any other context, screenshots, or examples.
+      placeholder: |
+        Links to similar features in other libraries, design mockups, etc.
+
+  - type: checkboxes
+    id: terms
+    attributes:
+      label: Checklist
+      description: Please confirm the following
+      options:
+        - label: I have searched existing issues and discussions to ensure this hasn't been requested before
+          required: true
+        - label: I have provided a clear use case for this feature
+          required: true
+        - label: I am willing to help implement this feature (optional)
+          required: false

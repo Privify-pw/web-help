@@ -1,0 +1,11 @@
+blank_issues_enabled: true
+contact_links:
+  - name: 💬 Ask a Question
+    url: https://github.com/pii-keep/web-help/discussions/new?category=q-a
+    about: Ask questions and get help from the community
+  - name: 📚 Documentation
+    url: https://github.com/pii-keep/web-help#readme
+    about: Read the documentation for usage guides and examples
+  - name: 💡 Ideas & Suggestions
+    url: https://github.com/pii-keep/web-help/discussions/new?category=ideas
+    about: Share ideas that aren't fully formed feature requests yet

@@ -1,0 +1,154 @@
+name: Bug Report
+description: Report a bug or unexpected behavior in @piikeep/web-help
+title: '[Bug]: '
+labels: ['bug', 'needs-triage']
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for taking the time to report a bug! Please fill out the information below to help us investigate.
+
+  - type: textarea
+    id: description
+    attributes:
+      label: Description
+      description: A clear and concise description of what the bug is.
+      placeholder: When I use the HelpSearch component, it doesn't filter results by category...
+    validations:
+      required: true
+
+  - type: textarea
+    id: reproduction
+    attributes:
+      label: Steps to Reproduce
+      description: Provide step-by-step instructions to reproduce the issue.
+      placeholder: |
+        1. Install @piikeep/web-help@0.2.0
+        2. Import HelpSearch component
+        3. Set category filter to "guides"
+        4. Search for "react"
+        5. Observe that results include other categories
+      value: |
+        1.
+        2.
+        3.
+    validations:
+      required: true
+
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected Behavior
+      description: What did you expect to happen?
+      placeholder: Results should only include articles from the "guides" category
+    validations:
+      required: true
+
+  - type: textarea
+    id: actual
+    attributes:
+      label: Actual Behavior
+      description: What actually happened?
+      placeholder: Results include articles from all categories
+    validations:
+      required: true
+
+  - type: textarea
+    id: code
+    attributes:
+      label: Code Sample
+      description: Please provide a minimal code sample that reproduces the issue.
+      placeholder: |
+        ```tsx
+        import { HelpSearch } from '@piikeep/web-help';
+
+        function MyComponent() {
+          return (
+            <HelpSearch
+              onResultSelect={(result) => console.log(result)}
+            />
+          );
+        }
+        ```
+      render: tsx
+
+  - type: input
+    id: version
+    attributes:
+      label: Package Version
+      description: What version of @piikeep/web-help are you using?
+      placeholder: '0.2.0'
+    validations:
+      required: true
+
+  - type: input
+    id: react-version
+    attributes:
+      label: React Version
+      description: What version of React are you using?
+      placeholder: '18.2.0'
+    validations:
+      required: true
+
+  - type: dropdown
+    id: bundler
+    attributes:
+      label: Build Tool / Bundler
+      description: What build tool are you using?
+      options:
+        - Vite
+        - Webpack
+        - Next.js
+        - Remix
+        - Create React App
+        - Other
+    validations:
+      required: true
+
+  - type: dropdown
+    id: browser
+    attributes:
+      label: Browser
+      description: Which browser(s) does this affect? (Select all that apply)
+      multiple: true
+      options:
+        - Chrome
+        - Firefox
+        - Safari
+        - Edge
+        - Other
+
+  - type: textarea
+    id: environment
+    attributes:
+      label: Environment
+      description: Provide relevant environment details (OS, Node version, etc.)
+      placeholder: |
+        - OS: macOS 14.0
+        - Node: 20.10.0
+        - npm: 10.2.0
+      value: |
+        - OS:
+        - Node:
+        - npm/yarn:
+
+  - type: textarea
+    id: additional
+    attributes:
+      label: Additional Context
+      description: Add any other context about the problem (error messages, screenshots, etc.)
+      placeholder: |
+        Console errors, screenshots, or any other relevant information...
+
+  - type: checkboxes
+    id: terms
+    attributes:
+      label: Checklist
+      description: Please confirm the following
+      options:
+        - label: I have searched existing issues to ensure this hasn't been reported before
+          required: true
+        - label: I have provided a minimal code sample that reproduces the issue
+          required: false
+        - label: I am using the latest version of @piikeep/web-help
+          required: false
