@@ -7,7 +7,29 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
-### Added
+## [0.2.0] - 2025-12-05
+
+### Phase 1B: Navigation & Search - Enhancements
+
+- **FuseSearchAdapter**: Integrated fuse.js for enhanced client-side search with better fuzzy matching, scoring, and highlighting
+- **SimpleSearchAdapter**: Lightweight search adapter with no dependencies for basic search functionality
+- Search adapter architecture supporting custom search implementations (Algolia, ElasticSearch, etc.)
+- Advanced search filtering by category and tags
+- Search result sorting options (relevance, date, title)
+- Match highlighting support in search results
+- Enhanced `useHelpSearch` hook to support search adapters
+- Improved search result snippet extraction
+- Better keyboard navigation in HelpSearch component
+- Recent searches tracking in UserPreferencesContext
+
+**Technical Details:**
+
+- Installed `fuse.js` (v7.0.0) for client-side search
+- Added search adapter interface in `types/search.ts`
+- Created `loaders/searchAdapters.ts` with FuseSearchAdapter and SimpleSearchAdapter implementations
+- Export search adapters from `core/loaders/index.ts`
+
+### Completed phase 3 and 4
 
 #### Phase 3A: Advanced Content Formats
 

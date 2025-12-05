@@ -106,6 +106,8 @@ export {
   createStaticLoader,
   ContentFormatDetector,
   createFormatDetector,
+  FuseSearchAdapter,
+  SimpleSearchAdapter,
 } from './core/loaders';
 
 export type {

@@ -18,6 +18,9 @@ export {
   createFormatDetector,
 } from './contentFormatDetector';
 
+// Search Adapters
+export { FuseSearchAdapter, SimpleSearchAdapter } from './searchAdapters';
+
 // Re-export types
 export type {
   ContentParser,
