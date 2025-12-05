@@ -402,8 +402,9 @@ export function HelpProvider({
       }
     };
     loadContent();
-    // Intentionally run only once on mount - contentManifest is captured in closure
-    // and autoNavigate is a stable prop that shouldn't change
+    // Dependencies: contentLoader and contentManifest determine what content to load
+    // autoNavigate controls initial navigation behavior
+    // This effect intentionally runs when these values change
   }, [contentLoader, contentManifest, autoNavigate]);
 
   // Actions context value - memoized and STABLE (no state dependency)

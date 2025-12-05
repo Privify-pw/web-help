@@ -69,6 +69,9 @@ export function useHelpNavigation(): UseHelpNavigationReturn {
     }
   }, [navigateToArticle, getState]);
 
+  // getBreadcrumbs is a stable function that computes breadcrumbs on each call
+  // The function reference is stable (good for useEffect dependencies)
+  // but the returned array is computed fresh each call (caller should memoize if needed)
   const getBreadcrumbs = useCallback((): BreadcrumbItem[] => {
     const breadcrumbs: BreadcrumbItem[] = [];
     const article = getState().currentArticle;
