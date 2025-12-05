@@ -8,6 +8,8 @@ import {
   useContext,
   useCallback,
   useMemo,
+  useRef,
+  useEffect,
   type ReactNode,
 } from 'react';
 import type {
@@ -16,7 +18,7 @@ import type {
   UserSettings,
   StorageAdapter,
 } from '../types/storage';
-import { useHelpContext } from './HelpContext';
+import { useHelpActions } from './HelpContext';
 
 /**
  * User preferences context value.
@@ -104,11 +106,21 @@ export interface UserPreferencesProviderProps {
 
 /**
  * User preferences provider component.
+ *
+ * Uses the split context pattern for optimal performance:
+ * - Storage and callbacks come from useHelpActions (stable, won't cause re-renders)
+ * - Callbacks are accessed via ref to maintain stability
  */
 export function UserPreferencesProvider({
   children,
 }: UserPreferencesProviderProps) {
-  const { storage, callbacks } = useHelpContext();
+  const { storage, callbacks } = useHelpActions();
+
+  // Store callbacks in a ref to avoid dependency changes
+  const callbacksRef = useRef(callbacks);
+  useEffect(() => {
+    callbacksRef.current = callbacks;
+  }, [callbacks]);
 
   // Read current preferences from storage
   const preferences = useMemo(
@@ -138,7 +150,7 @@ export function UserPreferencesProvider({
     [storage],
   );
 
-  // Bookmark functions
+  // Bookmark functions - use callbacksRef for stability
   const addBookmark = useCallback(
     (articleId: string) => {
       const bookmarks = readFromStorage<string[]>(
@@ -149,10 +161,10 @@ export function UserPreferencesProvider({
       if (!bookmarks.includes(articleId)) {
         const newBookmarks = [...bookmarks, articleId];
         storage.set(STORAGE_KEYS.BOOKMARKS, newBookmarks);
-        callbacks.onBookmark?.(articleId, true);
+        callbacksRef.current.onBookmark?.(articleId, true);
       }
     },
-    [storage, callbacks],
+    [storage],
   );
 
   const removeBookmark = useCallback(
@@ -164,9 +176,9 @@ export function UserPreferencesProvider({
       );
       const newBookmarks = bookmarks.filter((id) => id !== articleId);
       storage.set(STORAGE_KEYS.BOOKMARKS, newBookmarks);
-      callbacks.onBookmark?.(articleId, false);
+      callbacksRef.current.onBookmark?.(articleId, false);
     },
-    [storage, callbacks],
+    [storage],
   );
 
   const toggleBookmark = useCallback(

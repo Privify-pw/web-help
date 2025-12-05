@@ -68,6 +68,7 @@ export {
   HelpProvider,
   useHelpContext,
   useHelpState,
+  useHelpActions,
   UserPreferencesProvider,
   useUserPreferences,
 } from './core/context';

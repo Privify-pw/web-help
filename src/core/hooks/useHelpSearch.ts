@@ -4,7 +4,7 @@
  */
 
 import { useState, useCallback, useMemo, useEffect, useRef } from 'react';
-import { useHelpContext } from '../context/HelpContext';
+import { useHelpActions } from '../context/HelpContext';
 import type { HelpSearchResult, ContentIndex } from '../types/content';
 
 /**
@@ -152,11 +152,15 @@ function extractSnippet(
 
 /**
  * Hook for search functionality.
+ *
+ * Uses the split context pattern for optimal performance:
+ * - Actions come from useHelpActions (stable, won't cause re-renders)
+ * - Callbacks are accessed via the stable callbacks property
  */
 export function useHelpSearch(
   options?: UseHelpSearchOptions,
 ): UseHelpSearchReturn {
-  const { getContentIndex, callbacks } = useHelpContext();
+  const { getContentIndex, callbacks } = useHelpActions();
 
   const [query, setQueryState] = useState('');
   const [results, setResults] = useState<HelpSearchResult[]>([]);
@@ -164,6 +168,12 @@ export function useHelpSearch(
   const debounceRef = useRef<ReturnType<typeof setTimeout> | undefined>(
     undefined,
   );
+
+  // Store callbacks in a ref to avoid dependency changes
+  const callbacksRef = useRef(callbacks);
+  useEffect(() => {
+    callbacksRef.current = callbacks;
+  }, [callbacks]);
 
   // Memoize options
   const mergedOptions = useMemo(
@@ -174,7 +184,7 @@ export function useHelpSearch(
   // Memoize the content index
   const contentIndex = useMemo(() => getContentIndex(), [getContentIndex]);
 
-  // Perform search
+  // Perform search - stable, uses callbacksRef for callback access
   const performSearch = useCallback(
     async (searchQuery: string): Promise<HelpSearchResult[]> => {
       if (!searchQuery || searchQuery.length < mergedOptions.minQueryLength) {
@@ -190,15 +200,15 @@ export function useHelpSearch(
           mergedOptions,
         );
 
-        // Call callback
-        callbacks.onSearch?.(searchQuery, searchResults);
+        // Call callback via ref to avoid dependency
+        callbacksRef.current.onSearch?.(searchQuery, searchResults);
 
         return searchResults;
       } finally {
         setIsSearching(false);
       }
     },
-    [contentIndex, mergedOptions, callbacks],
+    [contentIndex, mergedOptions],
   );
 
   // Debounced search effect

@@ -8,7 +8,7 @@
 import { forwardRef, useEffect, useMemo } from 'react';
 import type { HelpPageProps } from '../types/components';
 import type { NavigationItem } from '../types/components';
-import { useHelpContext } from '../context/HelpContext';
+import { useHelpActions, useHelpState } from '../context/HelpContext';
 import { HelpContent } from './HelpContent';
 import { HelpNavigation } from './HelpNavigation';
 import { HelpBreadcrumbs } from './navigation/HelpBreadcrumbs';
@@ -36,6 +36,10 @@ function stripDuplicateTitle(html: string, title: string): string {
 /**
  * HelpPage is a headless container component for rendering help articles.
  * It provides semantic class names and data attributes for styling.
+ *
+ * Uses the split context pattern for optimal performance:
+ * - Actions (loadArticle, navigateToArticle) come from useHelpActions (stable)
+ * - State comes from useHelpState (reactive)
  */
 export const HelpPage = forwardRef<HTMLDivElement, HelpPageProps>(
   function HelpPage(
@@ -56,8 +60,8 @@ export const HelpPage = forwardRef<HTMLDivElement, HelpPageProps>(
     },
     ref,
   ) {
-    const { loadArticle, navigateToArticle, state, contentLoader } =
-      useHelpContext();
+    const { loadArticle, navigateToArticle, contentLoader } = useHelpActions();
+    const state = useHelpState();
 
     // Auto-build navigation from categories
     const navigationItems = useMemo((): NavigationItem[] => {
@@ -89,12 +93,12 @@ export const HelpPage = forwardRef<HTMLDivElement, HelpPageProps>(
     }, [state.categories, contentLoader]);
 
     // Load article if articleId provided
+    // loadArticle is now stable (from useHelpActions) so this won't cause infinite loops
     useEffect(() => {
       if (articleId && !article) {
         loadArticle(articleId);
       }
-      // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [articleId, article]); // Only re-run when articleId or article prop changes
+    }, [articleId, article, loadArticle]);
 
     const currentArticle = article ?? state.currentArticle;
     const isLoading = state.isLoading;

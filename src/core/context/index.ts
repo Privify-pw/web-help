@@ -7,8 +7,10 @@ export {
   HelpProvider,
   useHelpContext,
   useHelpState,
+  useHelpActions,
   type HelpProviderProps,
   type HelpState,
+  type HelpActions,
   type HelpContextValue,
 } from './HelpContext';
 

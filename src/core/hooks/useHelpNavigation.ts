@@ -4,7 +4,7 @@
  */
 
 import { useCallback, useMemo } from 'react';
-import { useHelpContext, useHelpState } from '../context/HelpContext';
+import { useHelpActions, useHelpState } from '../context/HelpContext';
 import type {
   NavigationState,
   BreadcrumbItem,
@@ -38,29 +38,40 @@ export interface UseHelpNavigationReturn {
 
 /**
  * Hook for navigation functionality.
+ *
+ * Uses the split context pattern for optimal performance:
+ * - Actions (navigateToArticle) come from useHelpActions (stable, won't cause re-renders)
+ * - State (navigation) comes from useHelpState (reactive, will cause re-renders when navigation changes)
+ * - goToPrev/goToNext use getState() to access current navigation without adding state dependencies
  */
 export function useHelpNavigation(): UseHelpNavigationReturn {
-  const { navigateToArticle, contentLoader } = useHelpContext();
+  const { navigateToArticle, contentLoader, getState } = useHelpActions();
   const state = useHelpState();
 
   const hasPrev = !!state.navigation.prev;
   const hasNext = !!state.navigation.next;
 
+  // Use getState() to access current navigation without adding state.navigation to dependencies
+  // This makes goToPrev stable (referentially equal between renders)
   const goToPrev = useCallback(async () => {
-    if (state.navigation.prev) {
-      await navigateToArticle(state.navigation.prev.id);
+    const nav = getState().navigation;
+    if (nav.prev) {
+      await navigateToArticle(nav.prev.id);
     }
-  }, [navigateToArticle, state.navigation.prev]);
+  }, [navigateToArticle, getState]);
 
+  // Use getState() to access current navigation without adding state.navigation to dependencies
+  // This makes goToNext stable (referentially equal between renders)
   const goToNext = useCallback(async () => {
-    if (state.navigation.next) {
-      await navigateToArticle(state.navigation.next.id);
+    const nav = getState().navigation;
+    if (nav.next) {
+      await navigateToArticle(nav.next.id);
     }
-  }, [navigateToArticle, state.navigation.next]);
+  }, [navigateToArticle, getState]);
 
   const getBreadcrumbs = useCallback((): BreadcrumbItem[] => {
     const breadcrumbs: BreadcrumbItem[] = [];
-    const article = state.currentArticle;
+    const article = getState().currentArticle;
 
     if (!article) return breadcrumbs;
 
@@ -87,7 +98,7 @@ export function useHelpNavigation(): UseHelpNavigationReturn {
     });
 
     return breadcrumbs;
-  }, [state.currentArticle, contentLoader]);
+  }, [getState, contentLoader]);
 
   /**
    * Navigate to a category. By default, this is a no-op as category navigation

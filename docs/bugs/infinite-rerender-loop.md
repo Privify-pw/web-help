@@ -1,8 +1,9 @@
 # Bug: Infinite Re-render Loop in Chrome
 
-**Status:** Open  
+**Status:** Fixed  
 **Priority:** High  
 **Date Reported:** 2025-12-05
+**Date Fixed:** 2025-12-05
 
 ## Description
 
@@ -23,73 +24,98 @@ The issue is related to the React context pattern in `HelpContext.tsx`:
 2. **Callback Dependency Chain**: When state changes → context updates → callbacks are considered "changed" by React → components with those callbacks in useEffect dependencies re-run → state changes again
 3. **Specific Trigger**: `HelpPage.tsx` has a useEffect that depends on `loadArticle` callback (now fixed with eslint-disable)
 
-## Attempted Fixes
+## Solution Implemented
 
-### What Was Tried
+The fix implements the **context splitting pattern** as recommended in React's official documentation:
 
-1. ✅ Added `useMemo` to wrap context value
-2. ✅ Used refs for `config` and `callbacks` to prevent unnecessary updates
-3. ✅ Added `stateRef` to allow callbacks to access current state without dependency
-4. ✅ Removed `state.currentArticle?.id` from `navigateToArticle` dependencies
-5. ⚠️ Disabled exhaustive-deps lint rule in `HelpPage.tsx` useEffect - **NOT A PROPER FIX**
+### 1. Split HelpContext into two separate contexts
 
-### Why They Don't Fully Work
+- **HelpStateContext**: Contains reactive state (will cause re-renders when state changes)
+- **HelpActionsContext**: Contains stable action functions (won't cause re-renders)
 
-The core issue is architectural:
+### 2. New hooks for optimized consumption
 
-- React Context with reducer pattern inherently causes re-renders when state changes
-- Callbacks that depend on state create circular dependencies
-- Components consuming the context re-render on every state change
-- Some of those components have effects that trigger more state changes
+- `useHelpState()`: Returns state only (reactive)
+- `useHelpActions()`: Returns actions only (stable)
+- `useHelpContext()`: Returns both (deprecated, for backward compatibility)
 
-## Proper Solution Needed
+### 3. Added `getState()` function
 
-The library needs a **context splitting pattern**:
+Allows callbacks to access current state without adding state to their dependencies.
+
+### 4. Stabilized all action callbacks
+
+All callbacks now use refs to access state and callbacks, preventing dependency changes:
+
+- `loadArticle` - uses `callbacksRef.current`
+- `navigateToArticle` - uses `stateRef.current`
+- `goToPrev/goToNext` - use `getState()`
+- `performSearch` - uses `callbacksRef.current`
+- `addBookmark/removeBookmark` - use `callbacksRef.current`
+
+### 5. Removed eslint-disable comments
+
+The workaround eslint-disable comments have been removed from:
+- `/src/core/components/HelpPage.tsx`
+
+## Files Changed
+
+| File | Change |
+|------|--------|
+| `/src/core/context/HelpContext.tsx` | Split into state/actions contexts, added `useHelpActions()`, `getState()` |
+| `/src/core/context/UserPreferencesContext.tsx` | Updated to use `useHelpActions()`, callbacks accessed via ref |
+| `/src/core/components/HelpPage.tsx` | Updated to use split hooks, removed eslint-disable |
+| `/src/core/hooks/useHelpNavigation.ts` | Updated to use `getState()` for stable callbacks |
+| `/src/core/hooks/useHelpSearch.ts` | Updated to use `callbacksRef` for stable callbacks |
+| `/src/core/context/index.ts` | Export `useHelpActions` and `HelpActions` type |
+| `/src/index.ts` | Export `useHelpActions` |
+
+## Usage Guidelines
+
+### For Best Performance
+
+Use the split hooks when possible:
 
 ```tsx
-// Pattern 1: Split into two contexts
-<HelpStateContext.Provider value={state}>
-  <HelpActionsContext.Provider value={actions}>
-    {children}
-  </HelpActionsContext.Provider>
-</HelpStateContext.Provider>
+// When you only need state (will re-render on state changes)
+const state = useHelpState();
 
-// Pattern 2: Use a state management library
-// - Zustand
-// - Jotai
-// - Redux Toolkit
+// When you only need actions (stable, won't cause re-renders)
+const { loadArticle, navigateToArticle } = useHelpActions();
 
-// Pattern 3: Use event emitters instead of callbacks in useEffect
+// In effects that call actions, you can now safely include them in dependencies
+useEffect(() => {
+  if (articleId) {
+    loadArticle(articleId);  // loadArticle is stable
+  }
+}, [articleId, loadArticle]);  // No eslint-disable needed!
 ```
 
-## Workaround for Now
+### For Backward Compatibility
 
-The current "fix" uses `eslint-disable-next-line react-hooks/exhaustive-deps` to suppress the warning about missing dependencies. This prevents the infinite loop but:
+The original `useHelpContext()` still works but is now deprecated:
 
-- Violates React best practices
-- Could lead to stale closures
-- Makes the code harder to maintain
+```tsx
+// Still works, but causes re-renders on all state changes
+const { state, loadArticle, navigateToArticle } = useHelpContext();
+```
 
-## Reproduction Steps
+## Previous Workarounds (No Longer Needed)
+
+The following workarounds were previously used but are no longer needed:
+
+1. ❌ `eslint-disable-next-line react-hooks/exhaustive-deps` in HelpPage.tsx - **REMOVED**
+2. ❌ `eslint-disable-next-line react-hooks/exhaustive-deps` in HelpContext.tsx - **REMOVED**
+
+## Verification Steps
+
+To verify the fix works:
 
 1. Run `npm run dev` in `examples/with-cli`
 2. Open http://localhost:5173/ in Chrome
 3. Open DevTools console
-4. Observe "Maximum update depth exceeded" errors (may be intermittent)
-
-## Related Files
-
-- `/src/core/context/HelpContext.tsx` - Main context provider
-- `/src/core/components/HelpPage.tsx` - Component with problematic useEffect
-- `/src/core/components/HelpNavigation.tsx` - Navigation component
-
-## Next Steps
-
-1. [ ] Research React Context best practices for this use case
-2. [ ] Evaluate state management libraries (Zustand recommended for small bundle size)
-3. [ ] Consider splitting context into state + actions
-4. [ ] Add integration tests that detect infinite loops
-5. [ ] Review all components that use `useHelpContext()` for similar issues
+4. No "Maximum update depth exceeded" errors should appear
+5. Navigate between articles - should work smoothly without console errors
 
 ## References
 
@@ -99,7 +125,9 @@ The current "fix" uses `eslint-disable-next-line react-hooks/exhaustive-deps` to
 
 ---
 
-## Code Review Comments (2025-12-05)
+## Original Code Review Comments (2025-12-05)
+
+The following issues were identified and addressed:
 
 ### Comment 1: Primary Issue in HelpContext.tsx (Lines 353-377)
 
