@@ -198,7 +198,9 @@ export function useHelpAnalytics(
     searches: 0,
   });
 
-  const batchTimerRef = useRef<NodeJS.Timeout | undefined>(undefined);
+  const batchTimerRef = useRef<ReturnType<typeof setTimeout> | undefined>(
+    undefined,
+  );
 
   // Debug logging
   const logDebug = useCallback(

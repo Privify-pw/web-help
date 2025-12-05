@@ -133,7 +133,9 @@ export const HelpEditor: React.FC<HelpEditorProps> = ({
 
   // Refs
   const contentRef = useRef<HTMLTextAreaElement>(null);
-  const autoSaveTimerRef = useRef<NodeJS.Timeout | undefined>(undefined);
+  const autoSaveTimerRef = useRef<ReturnType<typeof setTimeout> | undefined>(
+    undefined,
+  );
 
   // Build article from current state
   const buildArticle = useCallback((): HelpArticle => {
