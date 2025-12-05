@@ -4,6 +4,7 @@ node_modules/
 # Sources files
 src/
 examples/
+scripts/
 
 # Build configuration
 tsconfig.json
