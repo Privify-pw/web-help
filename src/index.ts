@@ -288,3 +288,79 @@ export type {
 
 // Legacy export for backwards compatibility
 export type { HelpMetadata } from './types/help-metadata';
+
+// ============================================================================
+// Developer Experience Tools
+// ============================================================================
+export {
+  // CLI Tools
+  cli,
+  generateInitFiles,
+  generateArticle,
+  getArticleTemplates,
+  getArticleTemplate,
+  slugify,
+  // Config Generator
+  configGenerator,
+  generateConfig,
+  generateMinimalConfig,
+  validateConfigOptions,
+  // Validation Tools
+  validation,
+  validateContent,
+  validateFrontmatter,
+  validateStructure,
+  validateLinks,
+  validateImages,
+  formatValidationReport,
+  DEFAULT_FRONTMATTER_SCHEMA,
+  // Migration Utilities
+  migration,
+  migrate,
+  migrateFile,
+  createMigrationPlan,
+  transformFrontmatter,
+  transformContent,
+  filenameToSlug,
+  getMigrationSourceInfo,
+  getSupportedSources,
+  // Documentation Tools
+  documentation,
+  parseJSDoc,
+  extractDocumentation,
+  generateMarkdownDocs,
+  generateJSONDocs,
+  generateTableOfContents,
+  generateDocs,
+} from './devtools';
+
+export type {
+  // CLI Types
+  CLICommand,
+  InitOptions,
+  AddArticleOptions,
+  CLIResult,
+  ArticleTemplate,
+  TemplateContent,
+  // Config Types
+  ConfigGeneratorOptions,
+  GeneratedConfig,
+  // Validation Types
+  ValidationType,
+  ValidationOptions,
+  FrontmatterSchema,
+  FrontmatterFieldType,
+  FrontmatterRule,
+  ValidationSeverity,
+  ValidationIssue,
+  ValidationResult,
+  // Migration Types
+  MigrationSource,
+  MigrationOptions,
+  MigrationMapping,
+  MigrationResult,
+  // Documentation Types
+  DocGeneratorOptions,
+  APIDocumentation,
+  PropDocumentation,
+} from './devtools';

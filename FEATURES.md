@@ -83,13 +83,13 @@ This document tracks all planned features for the @piikeep/web-help component li
 
 ## Phase 5: Developer Experience
 
-| Feature # | Title                       | Status     | Description                          |
-| --------- | --------------------------- | ---------- | ------------------------------------ |
-| #47       | CLI for scaffolding         | 🔲 Planned | init, add-article, validate commands |
-| #48       | TypeScript config generator | 🔲 Planned | Generate help.config.ts              |
-| #49       | Content validation tools    | 🔲 Planned | Validate content structure and links |
-| #50       | Migration utilities         | 🔲 Planned | Migrate from other help systems      |
-| #51       | Comprehensive documentation | 🔲 Planned | API reference, guides, examples      |
+| Feature # | Title                       | Status      | Description                          |
+| --------- | --------------------------- | ----------- | ------------------------------------ |
+| #47       | CLI for scaffolding         | ✅ Complete | init, add-article, validate commands |
+| #48       | TypeScript config generator | ✅ Complete | Generate help.config.ts              |
+| #49       | Content validation tools    | ✅ Complete | Validate content structure and links |
+| #50       | Migration utilities         | ✅ Complete | Migrate from other help systems      |
+| #51       | Comprehensive documentation | ✅ Complete | API reference, guides, examples      |
 
 ## Phase 6: Enterprise Features (v1.0.0)
 
