@@ -7,6 +7,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.2.2] - 2025-12-05
+
+### Enabled CLI
+
+- Introduced a command-line interface (CLI) for help content management
+- CLI supports content import, export, validation, and format conversion (Markdown, MDX, JSON, CSV)
+- Added CLI commands for content indexing and search adapter testing
+- CLI built with TypeScript and integrated into the package as `web-help-cli`
+- Updated documentation with CLI usage examples and command reference
+- Improved developer workflow for bulk content operations and automation
+- Ensured CLI adheres to headless and pluggable architecture principles
+
 ## [0.2.1] - 2025-12-05
 
 ### Enabled TypeScript Support
