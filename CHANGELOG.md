@@ -7,6 +7,19 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.2.1] - 2025-12-05
+
+### Enabled TypeScript Support
+
+- Migrated all source files to TypeScript (.ts and .tsx)
+- Enabled strict type checking across the codebase
+- Updated ESLint configuration for TypeScript support
+- Exported types alongside implementations for all components and hooks
+- Refactored legacy type exports to use `type` instead of `interface` where possible
+- Ensured all React components are functional and typed
+- Improved type safety for context, hooks, and storage adapters
+- Updated documentation to reflect TypeScript-first architecture
+
 ## [0.2.0] - 2025-12-05
 
 ### Phase 1B: Navigation & Search - Enhancements

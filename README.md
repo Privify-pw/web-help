@@ -102,6 +102,16 @@ npm run lint
 - Fork, make changes on a feature branch, run lint/build, and submit a PR.
 - Follow existing code style and add unit tests for new features.
 
+## Security Considerations
+
+This library uses `gray-matter` for parsing frontmatter in markdown files. Gray-matter uses `eval` internally for YAML parsing. This is safe when:
+
+- Processing trusted markdown content from your own codebase
+- Using the CLI tools to generate content
+- Not parsing user-submitted markdown in production
+
+For user-generated content, implement server-side validation and sanitization.
+
 ## License
 
 MIT — see LICENSE file.
